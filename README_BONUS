@@ -1,0 +1,33 @@
+Popa Stefania
+336CB
+
+    Pentru implementarea bonusului, m-am folosit de impartirea fisierului dpdv al octetilor si de
+o citire caracter cu caracter.
+    Formatul liniilor in fisierul "orders.txt" este "id_comanda,nr_produse", numarul de caractere nu
+este acelasi pe fiecare linie, din cauza numarului de produse care poate fi din 1, 2 sau mai multe cifre.
+
+    Astfel, pentru a sti ce comenzi prelucreaza fiecare thread, impart fisierul "orders.txt" in mod
+egal pentru cele P thread-uri dpdv al dimensiunii. In acest fel, fiecare thread de nivel 1 va avea
+o pozitie de start si una de end in "orders.txt" :
+    thread1 de la caracterul de pe poz c1 la caracterul de pe poz c2
+    thread2 de la caracterul de pe poz c2+1 la caracterul de pe poz c3
+    thread3 de la caracterul de pe poz c3+1 la caracterul de pe poz c4
+    ...etc. astfel incat thread-urile sa se ocupe de portiuni relativ egale
+
+    Fiecare thread de nivel 1 va prelucra comenzile cuprinse in intervalul sau.
+
+    Daca pentru thread-ul curent, ultima linie cuprinsa in intervalul propriu nu are pozitia de end chiar
+la sfarsitul liniei (adica caracterul de pe poz end sa fie chiar '\n'), atunci thread-ul prelucreaza inclusiv
+comanda de pe aceasta ultima linie. (caz1)
+    Daca pozitia de start nu marcheaza primul caracter de pe o linie (primul caracter dintr-o comanda), atunci
+ignor prima linie si pornesc prelucrarea comenzilor de catre thread-ul curent de la urmatoarea lnie (caci comanda
+corespunzatoare primei linii va fi prelucrata conform cazului 1).
+    Altfel, fiecare thread prelucreaza comenzile cuprinse pe liniile din intervalul propriu (start, end).
+
+
+    Thread-urile de nivel 2 se ocupa de prelucrarea produselor din fisierul "order_products.txt", in care formatul
+liniei este "id_comanda,id_produs", deci toate liniile au acelasi nr de caractere. Din acest motiv, nu mai e nevoie
+sa impartim thread-urile de nivel 2 in functie de caracterul de start si de end din fisier, ci putem face impartirea
+in mod egal in functie de linia de start si linia de end din fisier.
+    In acest fel, fiecare thread de nivel 2 va avea o portiune clara de produse(linii) ce trebuie prelucrate.
+(thread1 -> primul interval de linii, thread2 -> al doilea interval de linii din fisier , etc.)

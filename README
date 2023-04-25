@@ -1,0 +1,25 @@
+Popa Stefania
+336CB
+
+                       Manager de comenzi de Black Friday in Java
+
+
+    In implementarea temei, ne folosim de interfata ExecutorService, pe baza modelului Replicated Workers pentru
+a crea 2 thread pool-uri: ordersTp si productsTP. Astfel, avem P thread-uri de nivel 1 care se ocupa de procesarea
+in paralel a comenzilor si P thread-uri de nivel 2, ce se ocupa de procesarea in paralel a produselor.
+
+    Modul de citire si prelucrare a liniilor din cele 2 fisiere de intrare este explicat in fisierul README_BONUS,
+avand ca rezultat faptul ca fiecare thread stie de ce sectiune din fiser trebuie sa se ocupe.
+
+    Dupa ce stabilesc comenzile corespunzatoare fiecarui thread, pentru fiecare comanda identific produsele
+corespunzatoare acesteia, folosindu-ma de thread-urile de nivel 2.
+    Pentru ca o comanda sa fie livrata, trebuie sa ne asiguram ca toate produsele sale au fost livrate,
+iar acest fapt este realizat cu ajutorul unui semafor al carui contor este reprezentat de nr total de produse al
+unei comenzi.
+    In acest scop, pentru fiecare produs, verificam daca id-ul comenzii din care face parte (asa cum
+se regaseste in formatul liniilor din "order_products.txt"), este acelasi cu id-ul comenzii curente, caz in care
+produsul va fi marcat cu "shipped" in dreptul sau in fisierul de iesire si se va da un release.
+    Cand numarul de release-uri ii spune semaforului ca au fost livrate toate produsele din comanda curenta,
+marcam comanda cu "shipped" in fisierul de iesire.
+
+    Mai multe detalii de implementare se regasesc in comentariile din cod.
